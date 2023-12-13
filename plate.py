@@ -26,8 +26,8 @@ while True:
             
     cv2.imshow("Result",img)
     
-    if cv2.waitKey(1) & 0xFF == ord('s'):
-        cv2.imwrite("plate_img/scaned_img" + str(count)+ ".jpeg", img_roi)
+    if cv2.waitKey(1) & 0xFF == ord('s') and img_roi is not None:
+        cv2.imwrite("plate_img/scaned_img_" + str(count)+ ".jpeg", img_roi)
         cv2.rectangle(img,(0,200),(640,300),(0,255,0),cv2.FILLED)
         cv2.putText(img,"plate saved",(150,265),cv2.FONT_HERSHEY_COMPLEX_SMALL,2,(0,0,255), 2)
         cv2.imshow("Results",img)

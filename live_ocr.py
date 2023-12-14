@@ -42,28 +42,21 @@ while True:
         result = reader.readtext(plate_image_path)
 
         extracted_text = ' '.join([res[1] for res in result])
+        print("Extracted Text:", extracted_text)  # Debugging output
 
-        # Save the extracted text to an Excel file
-        excel_file = 'extracted_plate_text.xlsx'
+        # Save the extracted text to a CSV file
+        csv_file = 'extracted_plate_text.csv'
 
-        data = {'Plate Text': [extracted_text]}
-        df = pd.DataFrame(data)
+        if extracted_text.strip():  # Check if extracted_text is not empty or only whitespace
+            with open(csv_file, 'a') as file:
+                file.write(extracted_text + '\n')
 
-        # Check if the file exists
-        try:
-            existing_df = pd.read_excel(excel_file, engine='openpyxl')  # Specify the engine when reading
-            df = pd.concat([existing_df, df], ignore_index=True)
-        except FileNotFoundError:
-            pass
-
-        df.to_excel(excel_file, index=False, engine='openpyxl')  # Specify the engine when writing
-
-        # Display 'Plate Saved' message and update count
-        cv2.rectangle(img, (0, 200), (640, 300), (0, 255, 0), cv2.FILLED)
-        cv2.putText(img, "Plate Saved", (150, 265), cv2.FONT_HERSHEY_COMPLEX_SMALL, 2, (0, 0, 255), 2)
-        cv2.imshow("Results", img)
-        cv2.waitKey(500)
-        count += 1
+            # Display 'Plate Saved' message and update count
+            cv2.rectangle(img, (0, 200), (640, 300), (0, 255, 0), cv2.FILLED)
+            cv2.putText(img, "Plate Saved", (150, 265), cv2.FONT_HERSHEY_COMPLEX_SMALL, 2, (0, 0, 255), 2)
+            cv2.imshow("Results", img)
+            cv2.waitKey(500)
+            count += 1
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
